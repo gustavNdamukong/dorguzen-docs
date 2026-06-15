@@ -1,0 +1,130 @@
+<!-- Footer Start -->
+<div class="container-fluid bg-primary text-light footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5 px-lg-5">
+        <div class="row g-5">
+            <div class="col-md-6 col-lg-3">
+                <h5 class="text-white mb-4">Get In Touch</h5>
+                <p><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
+                <p><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
+                <p><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                <div class="d-flex pt-2">
+                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-instagram"></i></a>
+                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <h5 class="text-white mb-4">Popular Link</h5>
+                <a class="btn btn-link" href="">About Us</a>
+                <a class="btn btn-link" href="">Contact Us</a>
+                <a class="btn btn-link" href="">Privacy Policy</a>
+                <a class="btn btn-link" href="">Terms & Condition</a>
+                <a class="btn btn-link" href="">Career</a>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <h5 class="text-white mb-4">Project Gallery</h5>
+                <div class="row g-2">
+                    <div class="col-4">
+                        <img class="img-fluid" src="<?=$this->config->getFileRootPath()?>assets/images/portfolio-1.jpg" alt="Image">
+                    </div>
+                    <div class="col-4">
+                        <img class="img-fluid" src="<?=$this->config->getFileRootPath()?>assets/images/portfolio-2.jpg" alt="Image">
+                    </div>
+                    <div class="col-4">
+                        <img class="img-fluid" src="<?=$this->config->getFileRootPath()?>assets/images/portfolio-3.jpg" alt="Image">
+                    </div>
+                    <div class="col-4">
+                        <img class="img-fluid" src="<?=$this->config->getFileRootPath()?>assets/images/portfolio-4.jpg" alt="Image">
+                    </div>
+                    <div class="col-4">
+                        <img class="img-fluid" src="<?=$this->config->getFileRootPath()?>assets/images/portfolio-5.jpg" alt="Image">
+                    </div>
+                    <div class="col-4">
+                        <img class="img-fluid" src="<?=$this->config->getFileRootPath()?>assets/images/portfolio-6.jpg" alt="Image">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <h5 class="text-white mb-4">Newsletter</h5>
+                <p>Stay updated with our latest news, projects, and updates. Subscribe to our newsletter today.</p>
+                <div class="mt-3">
+                    <button type="button"
+                            class="btn btn-outline-light rounded-pill px-4 py-2 fw-semibold"
+                            data-bs-toggle="modal"
+                            data-bs-target="#subscribeModal">
+                        <i class="fa fa-envelope me-2"></i>Subscribe Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container px-lg-5">
+        <div class="copyright">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
+                    Powered By Dorguzen
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="footer-menu">
+                        <a href="">Home</a>
+                        <a href="">Cookies</a>
+                        <a href="">Help</a>
+                        <a href="">FQAs</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top pt-2"><i class="bi bi-arrow-up"></i></a>
+
+<!-- Subscribe Modal (available on every page) -->
+<?php $_subscribeBase = $this->config->getFileRootPath(); ?>
+<div class="modal fade" id="subscribeModal" tabindex="-1" aria-labelledby="subscribeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius:12px; overflow:hidden;">
+            <div class="modal-header bg-primary text-white border-0 py-4 px-4">
+                <h5 class="modal-title fw-bold" id="subscribeModalLabel">
+                    Subscribe to Our Newsletter
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-4 py-4">
+                <p class="text-muted mb-4">Stay updated with our latest news and updates. Enter your details below.</p>
+                <form action="<?= $_subscribeBase ?>subscribe" method="post" id="subscribeForm">
+                    <input type="hidden" name="_csrf_token" value="<?= getCsrfToken() ?>">
+                    <div class="mb-3">
+                        <label for="sub_email" class="form-label fw-semibold">
+                            Email address <span class="text-danger">*</span>
+                        </label>
+                        <input type="email" id="sub_email" name="subscriber_email"
+                               class="form-control" placeholder="you@example.com" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="sub_firstname" class="form-label fw-semibold">
+                            First name <span class="text-muted fw-normal">(optional)</span>
+                        </label>
+                        <input type="text" id="sub_firstname" name="subscriber_firstname"
+                               class="form-control" placeholder="Your first name">
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg fw-semibold">
+                            Subscribe
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0 px-4 pb-4 pt-0">
+                <small class="text-muted">We respect your privacy. Unsubscribe at any time.</small>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Subscribe Modal -->

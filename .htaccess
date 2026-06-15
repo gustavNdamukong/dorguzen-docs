@@ -1,0 +1,47 @@
+
+RewriteEngine on
+
+# ------------------------------- HOW DGZ ROUTING WORKS
+#
+# This file's only job is to decide whether a request should be handled by
+# Apache directly (real files/directories) or handed to the DGZ framework
+# (everything else).
+#
+# When a request reaches Apache:
+#   1. If the path maps to a real file on disk (CSS, JS, images, etc.)
+#      → Apache serves it directly. PHP never runs.
+#   2. If the path maps to a real directory on disk
+#      → Apache serves it directly. PHP never runs.
+#   3. Everything else
+#      → Forwarded to index.php. DGZ_Router takes over from there.
+#
+# DGZ_Router reads the full REQUEST_URI and handles all routing logic:
+#   - Defined routes (routes/web.php, routes/api.php) are checked first.
+#   - Automatic route discovery (controller/method/id convention) is the fallback.
+#
+# Because ALL routing decisions are made inside PHP, this file does not need
+# to know anything about URL depth or segment counts. A single catch-all rule
+# covers every possible URL — 1 segment or 10.
+
+# ------------------------------- RULE: empty path → home
+RewriteRule ^$ index.php [L]
+
+# ------------------------------- RULE: catch-all (any depth)
+# Only fires when the path is NOT a real file and NOT a real directory.
+# The [L] flag stops processing further rules once this one matches.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L]
+
+# ------------------------------- PHP upload limits
+#increase the PHP max file upload size and max post size to enable the uploading of bigger files
+<IfModule mod_php7.c>
+   php_value upload_max_filesize 50M
+   php_value post_max_size 50M
+   php_value memory_limit 256M
+</IfModule>
+<IfModule mod_php8.c>
+   php_value upload_max_filesize 50M
+   php_value post_max_size 50M
+   php_value memory_limit 256M
+</IfModule>
