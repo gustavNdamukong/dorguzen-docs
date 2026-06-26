@@ -1365,8 +1365,8 @@ class DGZ_Router {
         // Static-asset 404 guard: when a referenced asset file is missing from disk,
         // Apache's !-f condition passes the request to PHP. Detect these by file extension
         // and return a plain 404 immediately — no controller lookup, no DB logging.
-        $requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
-        $realFilePath = rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $requestPath;
+        $requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '';
+        $realFilePath = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/') . $requestPath;
         $staticExtensions = ['css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'ico',
                              'woff', 'woff2', 'ttf', 'eot', 'map', 'webp', 'pdf',
                              'mp4', 'mp3', 'ogg', 'wav', 'zip', 'gz'];
@@ -1534,12 +1534,25 @@ class DGZ_Router {
                 //----------------------------------------------------------
                 $hint = ($e instanceof DGZ_Exception) ? $e->getHint() : 'No hint available.';
 
-                DGZ_Logger::error($e->getMessage(), [
-                    'hint'  => $hint,
-                    'file'  => $e->getFile(),
-                    'line'  => $e->getLine(),
-                    'trace' => $e->getTraceAsString(),
-                ]);
+                // Don't DB-log routine routing 404s (unknown URL → no controller, or no such
+                // method) — almost entirely bot/scanner probes (wp-admin, wp-login.php,
+                // xmlrpc.php, wlwmanifest.xml …) that would otherwise flood the logs table.
+                // The 404 page is still shown.
+                $routeNotFoundTypes = [
+                    DGZ_Exception::CONTROLLER_CLASS_NOT_FOUND,   // no controller for the URL
+                    DGZ_Exception::MISSING_HANDLER_FOR_ACTION,   // controller found, no such method
+                ];
+                $isRouteNotFound = ($e instanceof DGZ_Exception)
+                    && in_array($e->getType(), $routeNotFoundTypes, true);
+
+                if (!$isRouteNotFound) {
+                    DGZ_Logger::error($e->getMessage(), [
+                        'hint'  => $hint,
+                        'file'  => $e->getFile(),
+                        'line'  => $e->getLine(),
+                        'trace' => $e->getTraceAsString(),
+                    ]);
+                }
                 //----------------------------------------------------------
 
                 // only show a hint to the user, for security reasons 

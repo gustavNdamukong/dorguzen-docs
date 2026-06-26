@@ -125,13 +125,13 @@ class contact extends \Dorguzen\Core\DGZ_HtmlView
 					<!------------------------------------
                     START OF SIDEBAR
                     -------------------------------------->
-					<div class="col-sm-3">
+					<div class="col-sm-3 mt-4 mt-sm-0">
 						<aside class="sidebar right">
 
 							<!-- WIDGET: LATEST NEWS - START -->
 							<div class="widget widget-post-categories">
 								<h3 style="color: #FFF; font-weight: bold;" class="text-center">Contact Info</h3>
-								<p>Phone: +17111222333</p>
+								<p>Phone: <?php $tel = config('app.site_contact_tel') ?: '+17111222333'; ?><a class="text-reset" href="tel:<?= htmlspecialchars(preg_replace('/[^0-9+]/', '', $tel)) ?>"><?= htmlspecialchars($tel) ?></a></p>
 								<p><strong><a href="mailto:dorguzen@dorguzen.com">Send us an email</a></strong></p>
 
 
@@ -164,7 +164,7 @@ class contact extends \Dorguzen\Core\DGZ_HtmlView
 								<h3>Twitter</h3>
 								<div class="widget" id="twitter-news">
 									<a class="twitter-timeline" data-width="265" data-height="800" href="https://twitter.com/yourAppName">Tweets by yourAppName</a>
-									<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+									<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 								</div>
 							</div>
 							<!-- WIDGET: FACEBOOK NEWS - END -->

@@ -18,13 +18,25 @@ MAIL_FROM_NAME="Your App Name"
 
 ### MailTrap for local development
 
+Sign in to your [Mailtrap](https://mailtrap.io) account, go to **Email Testing → Inboxes → SMTP Settings**, and copy your credentials.
+
 ```ini
 MAIL_HOST=sandbox.smtp.mailtrap.io
 MAIL_PORT=587
-MAIL_USERNAME=<mailtrap-user>
-MAIL_PASSWORD=<mailtrap-pass>
+MAIL_USERNAME=your-mailtrap-username
+MAIL_PASSWORD=your-mailtrap-password
 MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=noreply@yourapp.com
+MAIL_FROM_NAME="Your App Name"
 ```
+
+> **Also set `APP_EMAIL`** — this is the admin recipient address that `DGZ_Messenger` sends notifications *to*. If left empty, PHPMailer has no To: address and all admin emails fail silently.
+>
+> ```ini
+> APP_EMAIL=admin@yourapp.com
+> ```
+>
+> Mailtrap routes mail by SMTP credentials alone — any value in `APP_EMAIL`, `MAIL_FROM_ADDRESS`, or `MAIL_FROM_NAME` is accepted. Make sure all three are set to real (non-empty) values or you will see failures logged as *"Email failed to send from: …"* with no further error.
 
 ---
 
@@ -34,7 +46,40 @@ MAIL_ENCRYPTION=tls
 $messenger = new DGZ_Messenger();
 ```
 
-### Built-in Send Methods
+### Generic method — `sendEmail()`
+
+For any email your app needs to send that isn't covered by the built-in methods, use `sendEmail()`. You never need to add methods to `DGZ_Messenger` or touch core code — create a template in `views/emails/` and call `sendEmail()` from your service or controller.
+
+```php
+// Templated HTML email (most common)
+$messenger->sendEmail(
+    toEmail:     config('appEmail'),          // recipient
+    toName:      'Admin',
+    subject:     'New booking from ' . $name,
+    replyTo:     $visitorEmail,               // optional reply-to
+    replyToName: $visitorName,
+    data:        [
+        'heading'  => 'Booking Details',
+        'name'     => $name,
+        'date'     => $startDate,
+    ],
+    template: 'booking-confirmation',         // views/emails/booking-confirmation.php
+);
+
+// Plain-text email (no template)
+$messenger->sendEmail(
+    toEmail:  'user@example.com',
+    toName:   'Jane',
+    subject:  'Quick note',
+    body:     'Your request has been received.',
+);
+```
+
+When `$template` is provided the email is rendered via `renderEmail()` and sent as HTML. When omitted, `$body` is sent as plain text.
+
+### Built-in methods
+
+These cover standard framework flows — contact forms, auth emails, newsletters, error alerts. You do not need to call these for custom app emails; use `sendEmail()` instead.
 
 | Method | What it sends |
 |---|---|
@@ -45,29 +90,9 @@ $messenger = new DGZ_Messenger();
 | `sendErrorLogMsgToAdmin($message)` | Error alert to admin |
 | `sendNewsletterWelcomeMsg(...)` | First newsletter to new subscriber |
 | `sendNewsletterMsg(...)` | Regular newsletter to existing subscriber |
-| `sendHtml($toEmail, $toName, $subject, $htmlBody)` | Pre-rendered HTML body |
+| `sendHtml($toEmail, $toName, $subject, $htmlBody)` | Pre-rendered HTML body (no template rendering) |
 
 All methods return `true` on success, `false` on failure. Failures are logged automatically.
-
-### Examples
-
-```php
-// Welcome email
-$messenger->sendWelcomeEmail(
-    $user->users_firstname,
-    $user->users_email,
-    'Welcome to ' . $appName,
-    'Click the link below to get started...',
-);
-
-// Pre-rendered HTML
-$messenger->sendHtml(
-    toEmail:  $recipient,
-    toName:   $recipientName,
-    subject:  'Your custom subject',
-    htmlBody: $renderedHtml,
-);
-```
 
 ---
 
@@ -139,3 +164,54 @@ if (!$sent) {
     // failure is already logged — handle gracefully in the UI
 }
 ```
+
+Failures are written to the `logs` DB table with the method name and PHPMailer error info. Check there first when debugging delivery issues.
+
+---
+
+## Testing & Debugging SMTP
+
+If emails are not arriving, use this standalone script to verify that your SMTP credentials and connection are working independently of the framework. Save it temporarily outside the web root, run it once, then delete it.
+
+```php
+<?php
+// Temporary debug script — delete after use, never commit
+require_once __DIR__ . '/vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+$mail = new PHPMailer(true);
+
+try {
+    $mail->isSMTP();
+    $mail->SMTPDebug  = 2;                          // print full SMTP conversation
+    $mail->Host       = 'sandbox.smtp.mailtrap.io'; // from .env MAIL_HOST
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'your-mailtrap-username';   // from .env MAIL_USERNAME
+    $mail->Password   = 'your-mailtrap-password';   // from .env MAIL_PASSWORD
+    $mail->SMTPSecure = 'tls';
+    $mail->Port       = 587;
+
+    $mail->setFrom('noreply@yourapp.com', 'Your App');
+    $mail->addAddress('admin@yourapp.com', 'Admin');
+    $mail->isHTML(false);
+    $mail->Subject = 'SMTP test';
+    $mail->Body    = 'If you see this, SMTP is working.';
+    $mail->send();
+    echo "Email sent successfully.\n";
+} catch (Exception $e) {
+    echo "Failed: {$mail->ErrorInfo}\n";
+}
+```
+
+`SMTPDebug = 2` prints the full SMTP handshake so you can see exactly where the connection fails. A response ending with `250 2.0.0 Ok: queued` confirms the mail server accepted the message.
+
+**Common causes of silent failures:**
+
+| Symptom | Likely cause |
+|---|---|
+| `logs` table shows *"Email failed to send"* with no detail | `APP_EMAIL` is empty — PHPMailer has no To: address |
+| Debug script works but app emails don't arrive | `APP_EMAIL` or `MAIL_USERNAME`/`MAIL_PASSWORD` not set in `.env` |
+| `Connection refused` or timeout | Wrong `MAIL_HOST` / `MAIL_PORT` |
+| `SMTP Error: Could not authenticate` | Wrong `MAIL_USERNAME` / `MAIL_PASSWORD` |
