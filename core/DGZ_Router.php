@@ -1265,8 +1265,19 @@ class DGZ_Router {
                 // we make an exception for the HomeController-if no controller & no method parameter are given in the URL, go straight to its defaultAction() method.
                 if (strtoupper($get_input) == 'HOME') {
                     if ($rootPath == true) {
+                        // Bare site root "/" — this IS the canonical homepage URL, so render it normally.
                         $method = $object->getDefaultAction();
-                    } else { $method = $get_input; }
+                    } else {
+                        // We arrived here through an explicit homepage alias in the URL — "/home", "/index"
+                        // or "/index.php" — all of which auto-discovery resolves to the SAME page that the
+                        // canonical root "/" already serves. Rendering it here would expose the homepage at
+                        // several URLs (duplicate content), splitting its SEO ranking signals across them.
+                        // Instead we send a 301 "Moved Permanently" to the canonical root so search engines
+                        // consolidate everything onto one URL. This makes the fix automatic even for apps that
+                        // never declare an explicit "/home" route and rely purely on route auto-discovery.
+                        // redirectTo() lives on DGZ_Controller and exits the script after sending the header.
+                        $object->redirectTo($config->getHomePage(), 301);
+                    }
                 }
                 else
                 {

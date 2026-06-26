@@ -111,7 +111,7 @@
             <a href="#" class="btn btn-close btn-close-white btn-sm" onclick="closeSlideMenu(event)"></a>
         </div>
         <ul class="nav navbar-nav navbar-right list-group">
-            <a href="<?=$this->config->getFileRootPath()?>home" class="list-group-item list-group-item-action"><i class="fa fa-home fa-fw me-2"></i> Home</a>
+            <a href="<?=$this->config->getHomePage()?>" class="list-group-item list-group-item-action"><i class="fa fa-home fa-fw me-2"></i> Home</a>
             <a href="<?=$this->config->getFileRootPath()?>news" class="list-group-item list-group-item-action"><i class="fa fa-newspaper fa-fw me-2"></i> News</a>
             <a href="<?=$this->config->getFileRootPath()?>portfolio" class="list-group-item list-group-item-action"><i class="fa fa-briefcase fa-fw me-2"></i> Portfolio</a>
             <?php if (config('app.modules.gallery') === 'on'): ?>

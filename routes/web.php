@@ -8,7 +8,7 @@
 $router->get('/',          'HomeController@defaultAction')->name('home');
 $router->get('/terms',     'PagesController@terms')->name('terms');
 $router->get('/privacy',   'PagesController@privacy')->name('privacy');
-$router->get('/home',      'HomeController@defaultAction');
+$router->get('/home',      'HomeController@homeRedirect');   // 301 -> canonical "/" (avoids duplicate homepage URL)
 
 // Docs routes
 $router->get('/docs',              'DocsController@index');
