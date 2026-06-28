@@ -1,4 +1,4 @@
-# Views and Layouts
+# Views & Layouts
 
 Dorguzen separates page rendering into two layers:
 
@@ -183,6 +183,122 @@ public function __construct()
     $this->setLayoutView('docsLayout');
 }
 ```
+
+---
+
+## Partial Views — Reusable View Fragments with getInsideView()
+
+A partial view is a regular Dorguzen view class that is embedded inside another view rather than being rendered as a full page. Partials are how you reuse a chunk of HTML — a slide-in navigation menu, a pagination widget, a social-share bar, a comment form, a related-articles list — across many views without duplicating the markup.
+
+Any class that extends `DGZ_HtmlView` (or `DGZ_AdminHtmlView`) and exposes a `show()` method can be used as a partial. There is nothing special about the class — what makes it a partial is simply how it is consumed: via `DGZ_View::getInsideView()` rather than via the normal controller/layout pipeline.
+
+### Creating a partial
+
+Create the view class exactly as you would any view. By convention, partial files are named with a "Partial" suffix so they are easy to recognise at a glance:
+
+```php
+// views/relatedArticlesPartial.php
+namespace Dorguzen\Views;
+
+class relatedArticlesPartial extends \Dorguzen\Core\DGZ_HtmlView
+{
+    public function show(array $viewModel = []): void
+    {
+        extract($viewModel); // $articles
+        ?>
+        <aside class="related-articles">
+            <h4>Related Articles</h4>
+            <ul>
+                <?php foreach ($articles as $article): ?>
+                    <li><a href="<?= $this->rootPath() ?>news/<?= $article['slug'] ?>">
+                        <?= htmlspecialchars($article['title']) ?>
+                    </a></li>
+                <?php endforeach; ?>
+            </ul>
+        </aside>
+        <?php
+    }
+}
+```
+
+### Embedding a partial inside another view
+
+Call `DGZ_View::getInsideView()` from within any view's `show()` method, passing the partial's class name (without the namespace) and the current controller:
+
+```php
+// Inside another view's show() method:
+$related = \Dorguzen\Core\DGZ_View::getInsideView('relatedArticlesPartial', $this->controller);
+$related->show(['articles' => $articles]);
+```
+
+`getInsideView()` resolves the partial's class, injects the controller reference, and returns the partial instance. Calling `show()` on the result renders the partial's HTML inline at that point in the page. You can pass a view-model array to `show()` just as you would any view.
+
+`getInsideView()` is a general mechanism — it works for any partial, anywhere a controller reference is available. Admin views, frontend views, module views: all can use it.
+
+### Where NOT to use getInsideView() for the slide-in menu
+
+The slide-in navigation menu (`sideSlideInMenuPartial`) is a special case. It is automatically included in all frontend views via the layout header (`layouts/seoMaster/header.inc.php`). Calling `getInsideView('sideSlideInMenuPartial')` from a frontend view on top of that would produce two `#side-menu` divs on the page. The JavaScript toggle functions target `document.getElementById('side-menu')`, which finds only the first one, leaving the second as unreachable dead HTML.
+
+The correct rule:
+
+**Frontend views (rendered through seoMasterLayout):**
+Do NOT include `sideSlideInMenuPartial` manually. The layout handles it automatically.
+
+**Admin views (rendered through adminLayout):**
+DO include `sideSlideInMenuPartial` manually via `getInsideView()`. The admin layout does not auto-include it, so each admin view that needs the mobile slide-in menu must include it explicitly:
+
+```php
+$slideInMenu = \Dorguzen\Core\DGZ_View::getInsideView('sideSlideInMenuPartial', $this->controller);
+$slideInMenu->show();
+```
+
+### How the slide-in menu works
+
+The slide-in menu is a hidden off-canvas panel (`display:none`, `id="side-menu"`) that slides into view on mobile when the hamburger button (`navbar-toggler`) is tapped. The panel is controlled by two JavaScript functions defined in the layout header:
+
+- `toggleSlideMenu(e)` — opens the panel if closed, closes it if open
+- `closeSlideMenu(e)` — always closes the panel
+
+The hamburger button in the navbar calls `toggleSlideMenu(event)` via `onclick`:
+
+```html
+<button onclick="toggleSlideMenu(event)" type="button" class="navbar-toggler">
+    <span class="fa fa-bars"></span>
+</button>
+```
+
+The close button inside the panel calls `closeSlideMenu(event)`.
+
+On desktop the navbar collapses and Bootstrap's own collapse mechanism handles the nav links. The slide-in panel is hidden on desktop and is only relevant on mobile-sized viewports.
+
+### Customising the menu for a specific view
+
+Because the menu is now in the layout header and shared by all frontend views, customising it per-view is intentionally limited. Two practical options:
+
+**Option 1 — Use JavaScript to show/hide specific links.**
+Give conditional links a class (e.g. `"nav-link-members-only"`) and toggle their visibility with a short inline `<script>` block in the view that runs after the layout renders:
+
+```php
+<script>
+    document.querySelectorAll('.nav-link-members-only').forEach(function (el) {
+        el.style.display = '<?= isset($_SESSION['authenticated']) ? 'block' : 'none' ?>';
+    });
+</script>
+```
+
+**Option 2 — PHP conditionals in the layout header.**
+For cases where a link should always/never appear based on module status or session role, add the conditional directly in `header.inc.php`. The file has access to `$_SESSION` and the `config()` helper, making it straightforward to gate links on module flags or user type:
+
+```php
+<?php if (config('app.modules.gallery') === 'on'): ?>
+<a href="...">Gallery</a>
+<?php endif; ?>
+```
+
+**Option 3 — A completely custom slide-in menu for one view.**
+If a view's menu is genuinely unique (different links, different structure), override the auto-include by giving its slide-in div a different id (e.g. `id="side-menu-custom"`) and re-point the navbar toggler button for that view with a data attribute or custom JS. This is an advanced pattern and should be used sparingly.
+
+For most applications the single shared menu with PHP conditionals (Option 2) covers all real-world cases cleanly.
 
 ---
 

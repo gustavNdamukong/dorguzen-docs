@@ -1,8 +1,7 @@
-# Collaboration
+# Contributing & Collab
 
-> This section is being written and will be available soon.
-
-This page will cover **collaboration** in the context of Dorguzen and PHP.
+- This discusses the tools made available by your programming language of choice to collaborate with other developers. Examples are DB migrations which offer versions in terms of the time frames, and the ability to roll back database migrations.
+- The other option is to learn git.
 
 ---
 

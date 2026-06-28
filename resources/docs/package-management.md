@@ -1,8 +1,6 @@
 # Package Management
 
-> This section is being written and will be available soon.
-
-This page will cover **package management** in the context of Dorguzen and PHP.
+Almost every programming language has a way to manage assets, also known as packages or libraries. This also means managing their versions for compatibility reasons.
 
 ---
 

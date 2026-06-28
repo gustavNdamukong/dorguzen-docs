@@ -10,7 +10,7 @@
                 <img src="<?= $this->config->getFileRootPath() ?>assets/images/dorguzen-logo.png" alt="Dorguzen" height="44">
                 <span class="docs-logo-wordmark">Dorgu<span>zen</span></span>
             </a>
-            <span class="docs-version-badge">v1.1.0</span>
+            <span class="docs-version-badge">v1.4.0</span>
         </div>
 
         <!-- Centre: search -->

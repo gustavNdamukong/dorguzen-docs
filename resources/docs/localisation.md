@@ -1,8 +1,6 @@
-# Localisation
+# Localisation (i18n)
 
-> This section is being written and will be available soon.
-
-This page will cover **localisation** in the context of Dorguzen and PHP.
+- Talks about the tools that your programming language/framework offers you to dynamically translate your app for deployment in different geographic locations.
 
 ---
 
