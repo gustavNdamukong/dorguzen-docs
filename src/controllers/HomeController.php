@@ -19,12 +19,8 @@ class HomeController extends DGZ_Controller
 
     public function defaultAction()
     {
-        $view = DGZ_View::getView('home', $this, 'html');
-        $this->setLayoutDirectory($this->config->getConfig()['layoutDirectory']);
-        $this->setLayoutView($this->config->getConfig()['defaultLayout']);
-        $this->setPageTitle('Home');
-        $this->setImageSlider(true);
-        $view->show();
+        // Docs-only site: the home page sends visitors straight into the documentation.
+        $this->redirectTo($this->config->getFileRootPath() . 'docs/introduction', 302);
     }
 
 
