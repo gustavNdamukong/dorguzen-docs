@@ -1,0 +1,5 @@
+# Dorguzen documentation — https://dorguzen.com
+User-agent: *
+Allow: /
+
+Sitemap: https://dorguzen.com/sitemap.xml

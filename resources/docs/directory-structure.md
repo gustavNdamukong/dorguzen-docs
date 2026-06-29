@@ -7,63 +7,79 @@ Here is the Dorguzen directory structure:
 ```
 -assets
 -bootstrap
-    -cache
+    -cache                   # compiled config/route caches (gitignored)
       -config.php
       -config.php.meta
-    -app.php
+    -app.php                 # application bootstrap — DI container + service registrations
     -config.php
+    -custom_helpers.php      # your own global helper functions
     -helpers.php
     -helpers_runtime.php
--configs
+    -testing.php
+-configs                     # plain-PHP config arrays (env() values only)
     -app.php
+    -database.php
+    -events.php
+    -logging.php
     -modules
--core
-    -Exceptions
-        -ValidationException.php
+-core                        # framework internals — never edit
+    -CLI                     # the dgz console + make:* commands
+    -DGZ_Uploader
+    -DGZ_views
     -Psr
-        -PsrRequestAdapter.php
-        -SimpleRequestHandler.php
+    -config                  # ConfigLoader.php, EnvLoader.php
+    -console
+    -database                # migration/seeder engine + DB drivers
+    -email-views
+    -events
+    -exceptions              # ValidationException.php, etc.
+    -jetForms
+    -kernel
+    -queues
     -DGZ_Controller.php
     -DGZ_Model.php
-    -etc
+    -DGZ_Router.php
+    -...                     # the other DGZ_* framework classes
 -css
+-database
+    -factories
+    -migrations
+    -seeders
 -docs
 -js
 -lang
     -en
     -fre
--layouts
+-layouts                     # one folder per layout (your app's + the shipped ones)
     -admin
-    -dorguzApp
     -email
+    -seoMaster
 -middleware
-    -globalMiddleware
+    -Middleware.php
+    -globalMiddleware        # run on every request
       -BaseMiddleware.php
       -CsrfPsrMiddleware.php
       -FormValidationMiddleware.php
-    -routeMiddleware
-      -AuthMiddleware
+    -routeMiddleware         # opt-in, attached per route
+      -AuthMiddleware.php
 -modules
+-public
 -routes
     -api.php
     -web.php
--src
-    -api
-      -DocsController.php
-    -config
-      -Config.php
-      -ConfigLoader.php
-      -EnvLoader.php
+-src                         # YOUR application code
+    -CLI
+    -Testing
+    -api                     # versioned API controllers (e.g. api/v1/Controllers/)
+    -config                  # Config.php
     -controllers
     -events
     -forms
     -jobs
     -listeners
-    -forms
     -models
     -services
-
--storage (file uploads go here)
+-storage                     # writable; gitignored
     -cache
       -routes.php
     -logs
@@ -73,20 +89,22 @@ Here is the Dorguzen directory structure:
     -support
     -unit
 -vendor
--views
-    -home.php
+-views                       # DGZ_HtmlView classes (no business logic)
     -admin
--composer.json
--composer.lock
--dgz
--index.php
 -.env
 -.env.example
 -.env.local
 -.env.local.example
+-.env.testing
 -.gitignore
 -.htaccess
+-.user.ini
+-composer.json
+-composer.lock
+-dgz                         # the CLI entry point
+-index.php                   # front controller
 -phpunit.xml
+-README.md
 ```
 
 ---

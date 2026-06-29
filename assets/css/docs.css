@@ -799,9 +799,11 @@ body {
     margin-bottom: .5rem;
 }
 
-.dgz-modules-subtitle {
+/* Scoped under .docs-content so it outranks the ".docs-content p" prose colour;
+   otherwise this subtitle renders dark-on-dark inside the .dgz-modules card. */
+.docs-content .dgz-modules-subtitle {
     font-size: .9rem;
-    color: rgba(255,255,255,.6);
+    color: rgba(255,255,255,.85);
     margin-bottom: 1.5rem;
     line-height: 1.6;
 }

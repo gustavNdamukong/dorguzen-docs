@@ -118,12 +118,17 @@ class DocsController extends DGZ_Controller
         $labels = $this->pageLabels();
         $title  = ($labels[$slug] ?? ucfirst(str_replace('-', ' ', $slug))) . ' — Dorguzen Docs';
         $desc   = $this->extractDescription($markdown);
+        // Absolute, environment-aware canonical URL for this page (getHomePage()
+        // rtrims the trailing slash: "https://dorguzen.com" live, local URL on dev).
+        $canonical = $this->config->getHomePage() . '/docs/' . $slug;
 
         $this->addMetadata([
             '<title>' . htmlspecialchars($title, ENT_QUOTES) . '</title>',
             '<meta name="description" content="' . htmlspecialchars($desc, ENT_QUOTES) . '">',
+            '<link rel="canonical" href="' . htmlspecialchars($canonical, ENT_QUOTES) . '">',
             '<meta property="og:title" content="' . htmlspecialchars($title, ENT_QUOTES) . '">',
             '<meta property="og:description" content="' . htmlspecialchars($desc, ENT_QUOTES) . '">',
+            '<meta property="og:url" content="' . htmlspecialchars($canonical, ENT_QUOTES) . '">',
             '<meta property="og:type" content="article">',
             '<meta name="twitter:card" content="summary">',
             '<meta name="twitter:title" content="' . htmlspecialchars($title, ENT_QUOTES) . '">',
