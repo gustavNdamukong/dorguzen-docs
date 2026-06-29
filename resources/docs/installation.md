@@ -50,7 +50,7 @@ DB_KEY=a-random-encryption-key
 
 > `DB_KEY` is used to AES-encrypt password fields in the database. Choose any random string and keep it consistent — changing it after data has been inserted will break password verification.
 
-See the [Configuration](/dorguzen-docs/docs/configuration) page for the full list of available environment variables.
+See the [Configuration]({{base}}docs/configuration) page for the full list of available environment variables.
 
 ## 2. Create the database
 

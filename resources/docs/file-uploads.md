@@ -808,4 +808,4 @@ Behaviour changes in DGZ_Thumbnail:
 
 ---
 
-> **PDF generation** has its own page — see [PDF Generation](/dorguzen-docs/docs/pdf-generation).
+> **PDF generation** has its own page — see [PDF Generation]({{base}}docs/pdf-generation).

@@ -5,4 +5,4 @@
 
 ---
 
-Return to [Introduction](/dorguzen-docs/docs/introduction) or use the sidebar to navigate.
+Return to [Introduction]({{base}}docs/introduction) or use the sidebar to navigate.

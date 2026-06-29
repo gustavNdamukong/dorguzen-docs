@@ -4,4 +4,4 @@ Almost every programming language has a way to manage assets, also known as pack
 
 ---
 
-Return to [Introduction](/dorguzen-docs/docs/introduction) or use the sidebar to navigate.
+Return to [Introduction]({{base}}docs/introduction) or use the sidebar to navigate.

@@ -192,4 +192,4 @@ This is useful for a "preview receipt" page. Whether the browser displays it inl
 
 ---
 
-Return to [Introduction](/dorguzen-docs/docs/introduction) or use the sidebar to navigate.
+Return to [Introduction]({{base}}docs/introduction) or use the sidebar to navigate.

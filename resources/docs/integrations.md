@@ -113,4 +113,4 @@ Dashboard > Product catalog > select a product > copy the API ID from the price 
 
 ---
 
-Return to [Introduction](/dorguzen-docs/docs/introduction) or use the sidebar to navigate.
+Return to [Introduction]({{base}}docs/introduction) or use the sidebar to navigate.

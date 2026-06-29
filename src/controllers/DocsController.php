@@ -110,6 +110,9 @@ class DocsController extends DGZ_Controller
         }
 
         $markdown = file_get_contents($mdFile);
+        // Rewrite the {{base}} token in internal doc links to the app's root path:
+        // "/dorguzen-docs/" locally, "/" on the live dorguzen.com domain root.
+        $markdown = str_replace('{{base}}', $this->config->getFileRootPath(), $markdown);
         $html     = $this->parsedown->text($markdown);
 
         $labels = $this->pageLabels();

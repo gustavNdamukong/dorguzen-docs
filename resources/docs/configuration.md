@@ -6,7 +6,7 @@ This refers to the various ways in which the configuration of your application c
 
 ---
 
-> The **directory structure** has its own page — see [Directory Structure](/dorguzen-docs/docs/directory-structure).
+> The **directory structure** has its own page — see [Directory Structure]({{base}}docs/directory-structure).
 
 ---
 
@@ -1182,7 +1182,7 @@ The brand slider shares the same Owl Carousel library used by other carousels in
 
 ---
 
-> The **SEO module** has its own page — see [SEO Module](/dorguzen-docs/docs/seo).
+> The **SEO module** has its own page — see [SEO Module]({{base}}docs/seo).
 
 ---
 

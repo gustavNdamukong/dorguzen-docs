@@ -645,4 +645,4 @@ That is all fine, as long as you don't store it on the controller.
 
 ---
 
-Return to [Introduction](/dorguzen-docs/docs/introduction) or use the sidebar to navigate.
+Return to [Introduction]({{base}}docs/introduction) or use the sidebar to navigate.

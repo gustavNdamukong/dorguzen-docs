@@ -48,4 +48,4 @@ Don't confuse DSN (Delivery Status Notification) with DNS (Domain Name System) â
 
 ---
 
-Return to [Introduction](/dorguzen-docs/docs/introduction) or use the sidebar to navigate.
+Return to [Introduction]({{base}}docs/introduction) or use the sidebar to navigate.

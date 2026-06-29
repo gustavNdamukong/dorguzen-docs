@@ -15,8 +15,8 @@ This section covers:
   - Omitting the foreign key (convention over configuration)
   - Example — the Products model
   - Lazy loading related data
-- Migrations — see the dedicated [Migrations](/dorguzen-docs/docs/migrations) page
-- Database seeding — see the dedicated [Database Seeding](/dorguzen-docs/docs/seeding) page
+- Migrations — see the dedicated [Migrations]({{base}}docs/migrations) page
+- Database seeding — see the dedicated [Database Seeding]({{base}}docs/seeding) page
 - Dorguzen's support for multiple DB drivers
   - Architecture Overview
   - How database access works
@@ -526,15 +526,15 @@ $news = container(News::class);
 
 ---
 
-> **Migrations** have their own page — see [Migrations](/dorguzen-docs/docs/migrations).
+> **Migrations** have their own page — see [Migrations]({{base}}docs/migrations).
 
 ---
 
-> **Database seeding** has its own page — see [Database Seeding](/dorguzen-docs/docs/seeding).
+> **Database seeding** has its own page — see [Database Seeding]({{base}}docs/seeding).
 
 ---
 
-> See [Authentication](/dorguzen-docs/docs/authentication) for user roles and the Auth() helper.
+> See [Authentication]({{base}}docs/authentication) for user roles and the Auth() helper.
 
 ---
 

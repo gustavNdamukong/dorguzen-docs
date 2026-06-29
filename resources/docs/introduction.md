@@ -1,5 +1,5 @@
 <div class="dgz-hero">
-  <img src="/dorguzen-docs/assets/images/dorguzen-logo.png" alt="Dorguzen" class="dgz-hero-logo" id="dgz-intro-logo">
+  <img src="{{base}}assets/images/dorguzen-logo.png" alt="Dorguzen" class="dgz-hero-logo" id="dgz-intro-logo">
   <h1 class="dgz-hero-name">Dorgu<span>zen</span></h1>
   <p class="dgz-hero-tagline">Build it clean. Ship it fast. Own every line.</p>
   <p class="dgz-hero-desc">
@@ -8,7 +8,7 @@
     Clear code, honest architecture, and documentation that explains the <em>why</em>, not just the <em>what</em>.
   </p>
   <div class="dgz-hero-cta">
-    <a href="/dorguzen-docs/docs/installation" class="dgz-btn dgz-btn-primary">
+    <a href="{{base}}docs/installation" class="dgz-btn dgz-btn-primary">
       <i class="fas fa-rocket"></i> Get Started
     </a>
     <a href="https://github.com/gustavNdamukong/Dorguzen" target="_blank" class="dgz-btn dgz-btn-outline">
@@ -150,7 +150,7 @@ This documentation covers everything in the framework. Use the sidebar to naviga
 Ready? Let's go.
 
 <div class="dgz-hero-cta" style="justify-content:flex-start;margin-top:2rem;margin-bottom:0">
-  <a href="/dorguzen-docs/docs/installation" class="dgz-btn dgz-btn-primary">
+  <a href="{{base}}docs/installation" class="dgz-btn dgz-btn-primary">
     <i class="fas fa-arrow-right"></i> Start with Installation
   </a>
 </div>
