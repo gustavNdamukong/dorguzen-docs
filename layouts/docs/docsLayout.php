@@ -67,6 +67,10 @@ class docsLayout extends \Dorguzen\Core\DGZ_Layout {
 
 				<?= $this->content ?>
 
+				<footer class="docs-footer">
+					&copy; <?= date('Y') ?> Dorguzen — A <a href="https://nolimitmedia.ca/" target="_blank" rel="noopener">Nolimit Media</a> project.
+				</footer>
+
 			</div>
 		</main>
 

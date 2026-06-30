@@ -279,6 +279,26 @@ body {
     padding: 3.5rem 2.75rem 6rem;
 }
 
+/* ── Page footer (build credit) ────────────────────────────── */
+
+.docs-footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--dgz-border);
+    color: var(--dgz-muted);
+    font-size: 0.875rem;
+}
+
+.docs-footer a {
+    color: var(--dgz-orange-dark);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.docs-footer a:hover {
+    text-decoration: underline;
+}
+
 /* ── Typography ────────────────────────────────────────────── */
 
 .docs-content h1 {

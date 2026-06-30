@@ -95,7 +95,6 @@
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                     &copy; <?= htmlspecialchars(config('app.appName')) ?>, All Rights Reserved.
                     Powered By <a class="border-bottom" href="https://dorguzen.com/" target="_blank" rel="noopener">Dorguzen</a>
-                    <span class="d-block mt-1">A <a class="border-bottom" href="https://nolimitmedia.ca/" target="_blank" rel="noopener">Nolimit Media</a> project</span>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <div class="footer-menu">
