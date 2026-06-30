@@ -1,6 +1,13 @@
 
 RewriteEngine on
 
+# ------------------------------- RULE: canonical host — fold www → apex over https (301)
+# Redirects www.<domain> to the bare apex on https, preserving the full path.
+# Domain-agnostic (uses the captured host %1), so it ports to any site unchanged.
+# Place FIRST, before the routing rules below, so it runs on every request.
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
 # ------------------------------- HOW DGZ ROUTING WORKS
 #
 # This file's only job is to decide whether a request should be handled by
