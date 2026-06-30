@@ -12,6 +12,10 @@ class docsLayout extends \Dorguzen\Core\DGZ_Layout {
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Google Search Console ownership verification -->
+		<meta name="google-site-verification" content="aTFJBROpdMpRy3AgEV-hX_jrpKnADLXv1RVKVvwQML4">
+
 		<?= ($this->getMetadata() != null) ? $this->getMetadata() : '<title>Dorguzen Docs</title>' ?>
 
 		<!-- Fonts -->
